@@ -1,0 +1,25 @@
+
+
+
+
+<!--  index.html  -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real Estate Price Prediction</title>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit"> check url </button>
+    </form>
+
+    {% if url %}
+    <div>
+        <h2>url type : {{ url }}</h2>
+    </div>
+    {% endif %}
+</body>
+</html>
