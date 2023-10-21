@@ -1,25 +1,79 @@
 
-
-
-
-<!--  index.html  -->
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Real Estate Price Prediction</title>
+    <title>URL prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+        }
+
+        form {
+            background-color: #fff;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #333;
+            background-color: #fff;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit"> check url </button>
+        <h1> URL</h1>
+        <h2>  Malicious URL or</h2>
+        <h2>  Benigncheck URL</h2>
+        <label for="url">Enter URL:</label>
+        <input type="text" id="url" name="url" placeholder="Enter URL">
+        <button type="submit">Check URL</button>
     </form>
 
     {% if url %}
-    <div>
-        <h2>url type : {{ url }}</h2>
+    <div class="result">
+        <h2>URL Type: {{ url }}</h2>
     </div>
     {% endif %}
 </body>
 </html>
+

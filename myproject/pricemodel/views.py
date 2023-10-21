@@ -54,7 +54,7 @@ def predict_price(request):
             if url >= 0.5:
                  url = "Malicious URL"
             else:
-                 url = "Benign URL"
+                 url = "Benign URL"    
 
             # Prepare the response
             context = {
