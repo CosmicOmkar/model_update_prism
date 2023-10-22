@@ -2,7 +2,9 @@ from django.shortcuts import render
 
 
 import os
-import joblib
+#import joblib
+#import pickle
+from keras.models import load_model
 import numpy as np
 from django.shortcuts import render
 from .forms import URL
@@ -40,9 +42,12 @@ def predict_price(request):
             url = form.cleaned_data.get('url')
 
             # Load the trained PRISM_Model
-            model_path = os.path.join(os.path.dirname(__file__), 'models', 'PRISM_Model.pkl')
-            model = joblib.load(model_path)
+            model_path = os.path.join(os.path.dirname(__file__), 'models', 'PRISM_Model.h5')
+            # with open(model_path, 'rb') as file:
+            #     model = pickle.load(file)
             
+            model = load_model(model_path)
+
             url = convert_url(url)
             url = np.array(url)
             url = url.reshape(1, -1)
@@ -51,11 +56,13 @@ def predict_price(request):
             
             url = model.predict(url)
 
+            #print("Return val: ", url)
+
             if url >= 0.5:
                  url = "Malicious URL"
             else:
-                 url = "Benign URL"    
-
+                 url = "Benign URL"
+            # url = "Some text"
             # Prepare the response
             context = {
                 'form': form,
@@ -107,7 +114,7 @@ def predict_price(request):
         form = PricePredictionForm(request.POST)
         if form.is_valid():
             # Load the trained linear regression model
-            model_path = os.path.join(os.path.dirname(__file__), 'models', 'linear_regression_model.pkl')
+            model_path = os.path.join(os.path.dirname(_file_), 'models', 'linear_regression_model.pkl')
             model = joblib.load(model_path)
 
             # Extract input data from the form

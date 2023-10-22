@@ -1,79 +1,208 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>URL prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Prediction</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #FFAD8E, #FFD6A3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
 
-        form {
-            background-color: #fff;
-            max-width: 400px;
-            margin: 0 auto;
+        .container {
+            position: relative;
+            background: linear-gradient(to bottom, #FFFFFF, #E0E0E0);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
             padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
         }
 
         h1 {
+            color: #FF5733;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
             color: #333;
+            font-size: 28px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-top: 30px;
+            color: #666;
+            font-size: 20px;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            border: none;
+            border-bottom: 2px solid #FF5733;
+            border-radius: 0;
+            font-size: 24px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #E14121;
         }
 
         button {
-            background-color: #007bff;
+            background-color: #FF5733;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+            font-size: 20px;
+            animation: pulse 2s infinite;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #E14121;
+            animation: none; /* Remove animation on hover */
         }
 
         .result {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #333;
-            background-color: #fff;
+            display: none;
+            background: linear-gradient(to bottom, #D3E0E8, #A5D8F3);
+            border: 1px solid #2073B6;
             border-radius: 5px;
+            padding: 15px;
+            margin-top: 30px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .result h2 {
+            color: #FF5733;
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        /* Animation for Samsung Prism background */
+        .animated-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: -1;
+            animation: moveBackground 30s infinite linear;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes moveBackground {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 100% 100%;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Animation for results */
+        @keyframes fadeInResult {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .malicious-result {
+            animation: fadeInResult 1s ease-in-out;
+            color: #FF5733;
+            font-size: 28px;
+        }
+
+        .benign-result {
+            animation: fadeInResult 1s ease-in-out;
+            color: #35B955;
+            font-size: 28px;
         }
     </style>
 </head>
 <body>
-    <form method="post">
-        {% csrf_token %}
-        <h1> URL</h1>
-        <h2>  Malicious URL or</h2>
-        <h2>  Benigncheck URL</h2>
-        <label for="url">Enter URL:</label>
-        <input type="text" id="url" name="url" placeholder="Enter URL">
-        <button type="submit">Check URL</button>
-    </form>
+    <!-- Animated background -->
+    <div class="animated-background" style="background-image: url('your-image.jpg');"></div>
 
-    {% if url %}
-    <div class="result">
-        <h2>URL Type: {{ url }}</h2>
+    <div class="container">
+        <h1>URL Prediction</h1>
+        <h2>Malicious URL or Benign URL Check</h2>
+        <form id="url-form">
+            <label for="url">Enter URL:</label>
+            <input type="text" id="url" name="url" placeholder="Enter URL">
+            <button type="submit">Check URL</button>
+        </form>
+        <div class="result" id="result-div">
+            <h2 class="malicious-result" id="result-malicious">Malicious</h2>
+            <h2 class="benign-result" id="result-benign">Benign</h2>
+        </div>
     </div>
-    {% endif %}
+
+    <script>
+        const urlForm = document.getElementById("url-form");
+        const resultDiv = document.getElementById("result-div");
+        const resultMalicious = document.getElementById("result-malicious");
+        const resultBenign = document.getElementById("result-benign");
+
+        urlForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            const urlInput = document.getElementById("url");
+            const url = urlInput.value;
+
+            // Simulate URL prediction here (replace with your logic)
+            const isMalicious = Math.random() > 0.5;
+
+            if (isMalicious) {
+                resultMalicious.style.display = "block";
+                resultBenign.style.display = "none";
+            } else {
+                resultBenign.style.display = "block";
+                resultMalicious.style.display = "none";
+            }
+
+            resultDiv.style.display = "block";
+        });
+    </script>
 </body>
 </html>
-
