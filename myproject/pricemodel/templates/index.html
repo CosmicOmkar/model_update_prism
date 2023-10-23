@@ -165,66 +165,64 @@
     <!-- Animated background -->
     <div class="animated-background" style="background-image: url('your-image.jpg');"></div>
 
-    <div class="container" >
-        <form id="url-form"  method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
+    <div class="container">
+        
 
+        <form id="url-form" method="post">
+            {% csrf_token %}
+      
+    
             <h1>URL Prediction</h1>
             <h2>Malicious URL or Benign URL Check</h2>
-
+    
             <label for="url">Enter URL:</label>
             <input type="text" id="url" name="url" placeholder="Enter URL">
             <button type="submit">Check URL</button>
-
+        </form>
+        
         {% if url1 %}
-        if(url1==Malicious )
-        const isMalicious = true
-        else 
+        <script>
+            const urlForm = document.getElementById("url-form");
+            const resultDiv = document.getElementById("result-div");
+            const resultMalicious = document.getElementById("result-malicious");
+            const resultBenign = document.getElementById("result-benign");
+            let isMalicious = false; // Initialize isMalicious
+    
+            // Check if url1 is equal to "Malicious"
+            if ("{{ url1 }}" === "Malicious") {
+                isMalicious = true;
+            }
+    
+            urlForm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                const urlInput = document.getElementById("url");
+                const url = urlInput.value;
+    
+                // Simulate URL prediction here (replace with your logic)
+                // This logic is a placeholder and should be replaced with your actual logic
+                // The value of isMalicious is determined by the previous check
+                if (isMalicious) {
+                    resultMalicious.style.display = "block";
+                    resultBenign.style display = "none";
+                } else {
+                    resultBenign.style.display = "block";
+                    resultMalicious.style.display = "none";
+                }
+    
+                resultDiv.style.display = "block";
+            });
+        </script>
         {% endif %}
         <div>
             <h2>check: ${{ url }}</h2>
         </div>
 
-        </form>
         <div class="result" id="result-div">
             <h2 class="malicious-result" id="result-malicious">Malicious</h2>
             <h2 class="benign-result" id="result-benign">Benign</h2>
         </div>
     </div>
 
-    <script>
-        const urlForm = document.getElementById("url-form");
-        const resultDiv = document.getElementById("result-div");
-        const resultMalicious = document.getElementById("result-malicious");
-        const resultBenign = document.getElementById("result-benign");
-
-        urlForm.addEventListener("submit", function (e) {
-            e.preventDefault();
-            const urlInput = document.getElementById("url");
-            const url = urlInput.value;
-
-            // Simulate URL prediction here (replace with your logic)
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-            </form>
-        
-            {% if url1 %}
-            if(url1==Malicious )
-            const isMalicious = true
-            {% endif %}
-
-            if (isMalicious) {
-                resultMalicious.style.display = "block";
-                resultBenign.style.display = "none";
-            } else {
-                resultBenign.style.display = "block";
-                resultMalicious.style.display = "none";
-            }
-
-            resultDiv.style.display = "block";
-        });
-    </script>
 </body>
 </html>
+
