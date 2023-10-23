@@ -165,13 +165,27 @@
     <!-- Animated background -->
     <div class="animated-background" style="background-image: url('your-image.jpg');"></div>
 
-    <div class="container">
-        <h1>URL Prediction</h1>
-        <h2>Malicious URL or Benign URL Check</h2>
-        <form id="url-form">
+    <div class="container" >
+        <form id="url-form"  method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <h1>URL Prediction</h1>
+            <h2>Malicious URL or Benign URL Check</h2>
+
             <label for="url">Enter URL:</label>
             <input type="text" id="url" name="url" placeholder="Enter URL">
             <button type="submit">Check URL</button>
+
+        {% if url1 %}
+        if(url1==Malicious )
+        const isMalicious = true
+        else 
+        {% endif %}
+        <div>
+            <h2>check: ${{ url }}</h2>
+        </div>
+
         </form>
         <div class="result" id="result-div">
             <h2 class="malicious-result" id="result-malicious">Malicious</h2>
@@ -191,7 +205,15 @@
             const url = urlInput.value;
 
             // Simulate URL prediction here (replace with your logic)
-            const isMalicious = Math.random() > 0.5;
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+            </form>
+        
+            {% if url1 %}
+            if(url1==Malicious )
+            const isMalicious = true
+            {% endif %}
 
             if (isMalicious) {
                 resultMalicious.style.display = "block";

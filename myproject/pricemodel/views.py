@@ -59,14 +59,14 @@ def predict_price(request):
             #print("Return val: ", url)
 
             if url >= 0.5:
-                 url = "Malicious URL"
+                 url1 = "Malicious URL"
             else:
-                 url = "Benign URL"
+                 url1 = "Benign URL"
             # url = "Some text"
             # Prepare the response
             context = {
                 'form': form,
-                'url': url,  # Add the URL to the context for rendering in the template
+                'url': url1,  # Add the URL to the context for rendering in the template
             }
             return render(request, 'index.html', context)
     else:
