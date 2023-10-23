@@ -25,6 +25,11 @@
             animation: fadeIn 1s ease-in-out;
         }
 
+        h1, h2, label, button {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
         h1 {
             color: #FF5733;
             font-size: 36px;
@@ -73,7 +78,7 @@
 
         button:hover {
             background-color: #E14121;
-            animation: none; /* Remove animation on hover */
+            animation: none;
         }
 
         .result {
@@ -105,10 +110,6 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -125,14 +126,11 @@
         }
 
         @keyframes pulse {
-            0% {
+            0%, 100% {
                 transform: scale(1);
             }
             50% {
                 transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
             }
         }
 
@@ -166,18 +164,13 @@
     <div class="animated-background" style="background-image: url('your-image.jpg');"></div>
 
     <div class="container">
-        
-
         <form id="url-form" method="post">
             {% csrf_token %}
-      
-    
             <h1>URL Prediction</h1>
             <h2>Malicious URL or Benign URL Check</h2>
-    
             <label for="url">Enter URL:</label>
             <input type="text" id="url" name="url" placeholder="Enter URL">
-            <button type="submit">Check URL</button>
+            <button type="submit" id="check-button">Check URL</button>
         </form>
         
         {% if url1 %}
@@ -187,28 +180,26 @@
             const resultMalicious = document.getElementById("result-malicious");
             const resultBenign = document.getElementById("result-benign");
             let isMalicious = false; // Initialize isMalicious
-    
-            // Check if url1 is equal to "Malicious"
-            if ("{{ url1 }}" === "Malicious") {
+
+            // Check if url1 is equal to "Malicious URL"
+            if ("{{ url1 }}" === "Malicious URL") {
                 isMalicious = true;
             }
-    
+
             urlForm.addEventListener("submit", function (e) {
                 e.preventDefault();
                 const urlInput = document.getElementById("url");
                 const url = urlInput.value;
-    
-                // Simulate URL prediction here (replace with your logic)
-                // This logic is a placeholder and should be replaced with your actual logic
-                // The value of isMalicious is determined by the previous check
+
+                
                 if (isMalicious) {
                     resultMalicious.style.display = "block";
-                    resultBenign.style display = "none";
+                    resultBenign.style.display = "none";
                 } else {
                     resultBenign.style.display = "block";
                     resultMalicious.style.display = "none";
                 }
-    
+
                 resultDiv.style.display = "block";
             });
         </script>
@@ -222,7 +213,14 @@
             <h2 class="benign-result" id="result-benign">Benign</h2>
         </div>
     </div>
-
+    
+    <script>
+        // Add animations for the elements
+        const elementsToAnimate = document.querySelectorAll("h1, h2, label, button");
+        
+        elementsToAnimate.forEach((element, index) => {
+            element.style.animation = `fadeIn 1s ease-in-out ${index * 0.2}s forwards`;
+        });
+    </script>
 </body>
 </html>
-
